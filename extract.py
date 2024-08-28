@@ -2,6 +2,7 @@ import cv2
 import numpy as np
 import math
 from collections import Counter
+import sys
 
 def get_grid_image(path):
     full_image = cv2.imread(path)
@@ -37,7 +38,7 @@ def get_2d_color_list(image):
     i =0
     for cnt in contours:
         x1, y1 = cnt[0][0]
-        approx = cv2.approxPolyDP(cnt, 0.01 * cv2.arcLength(cnt, True), True)
+        approx = cv2.approxPolyDP(cnt, 0.02 * cv2.arcLength(cnt, True), True)
 
         if len(approx) == 4:
             x, y, w, h = cv2.boundingRect(cnt)
@@ -128,8 +129,11 @@ def get_solution(w,h,n,position_map,c_list,image):
 
     return "image saved at queens_positions.png"
 
-image = get_grid_image("Screenshot 2024-08-20 211629.png")
+path = sys.argv[1]
+
+image = get_grid_image(path)
 
 w, h, n, position_map, colors = get_2d_color_list(image)
+
 
 print(get_solution(w,h,n,position_map,colors,image))
